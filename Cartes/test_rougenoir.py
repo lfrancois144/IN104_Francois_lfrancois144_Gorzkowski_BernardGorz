@@ -5,11 +5,13 @@ jeu = deck.Jeu()
 jeu.melange()
 
 # question
-guess = input('Quelle coueur devinez-vous? [R/N]')
+guess = input('Quelle couleur devinez-vous? [R/N]')
 
 #piocher
 carte_tiree = jeu.pioche()
 # question : elle la pop ou elle la remet ? fixme
+
+print("Vous avez tire un(e) ", carte_tiree)
 
 
 # regarder si la carte tire est rouge ou noire
