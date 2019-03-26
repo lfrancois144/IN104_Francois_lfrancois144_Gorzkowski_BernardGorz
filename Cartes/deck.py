@@ -5,4 +5,13 @@ class Jeu():
         pass
 
     def pioche(self):
-        return 'R'
+        carte=Carte("R")
+        return carte
+
+
+class Carte():
+    def __init__(self, color):
+        self.color=color
+
+    def getColor(self):
+        return self.color

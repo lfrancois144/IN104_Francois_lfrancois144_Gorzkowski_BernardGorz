@@ -11,7 +11,7 @@ guess = input('Quelle couleur devinez-vous? [R/N]')
 carte_tiree = jeu.pioche()
 # question : elle la pop ou elle la remet ? fixme
 
-print("Vous avez tire un(e) ", carte_tiree)
+print("Vous avez tire un(e) ", carte_tiree.getColor())
 
 
 # regarder si la carte tire est rouge ou noire
