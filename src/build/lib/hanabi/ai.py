@@ -120,9 +120,6 @@ class Cheater(AI):
         return act
 
 class Random(AI):
-    """
-    Plays randomly
-    """
     def play(self):
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5', 'p1', 'p2', 'p3', 'p4', 'p5']
         return(coups_possibles[randint(0,19)])
