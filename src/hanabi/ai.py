@@ -118,3 +118,7 @@ class Cheater(AI):
         print('Cheater is doomed and must discard:', act, myprecious)
         return act
 
+class Random(AI):
+    coups_possibles=[d1, d2, d3, d4, d5, cR, cB, cG, cW, cY, c1, c2, c3, c4, c5, p1, p2, p3, p4, p5]
+    def play(self):
+        
