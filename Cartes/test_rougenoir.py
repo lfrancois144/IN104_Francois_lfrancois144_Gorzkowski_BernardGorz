@@ -1,6 +1,6 @@
 import deck  # game ? rougenoir ?
-
-jeu = deck.Jeu(4)
+taille_deck=int(input("Nombre de cartes dans le jeu?"))
+jeu = deck.Jeu(taille_deck)
 
 jeu.melange()
 
