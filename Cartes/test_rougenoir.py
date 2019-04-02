@@ -8,7 +8,7 @@ while jeu.nb_cartes > 0:
     # question
     guess = input('\nQuelle couleur devinez-vous? [R/N] ')
 
-    #TODO vérifier que le format de la carte en input est correct
+    #TODO verifier que le format de la carte en input est correct
 
     #piocher
     jeu.pioche()
