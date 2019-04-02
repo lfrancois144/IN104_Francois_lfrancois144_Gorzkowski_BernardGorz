@@ -1,24 +1,32 @@
 import deck  # game ? rougenoir ?
 
-jeu = deck.Jeu()
+jeu = deck.Jeu(4)
 
 jeu.melange()
 
-# question
-guess = input('Quelle couleur devinez-vous? [R/N]')
+while jeu.nb_cartes > 0:
+    # question
+    guess = input('\nQuelle couleur devinez-vous? [R/N] ')
 
-#piocher
-carte_tiree = jeu.pioche()
-# question : elle la pop ou elle la remet ? fixme
+    #TODO vérifier que le format de la carte en input est correct
 
-print("Vous avez tire un(e) ", carte_tiree.getColor())
+    #piocher
+    jeu.pioche()
+    picked_color = jeu.top.color
+
+    # question : elle la pop ou elle la remet ? fixme
+
+    print("Vous avez choisit un(e)", guess)
+
+    print("Vous avez tiré un(e)", picked_color)
 
 
-# regarder si la carte tire est rouge ou noire
-if carte_tiree.color == guess :
-    print('gagne')
-else:
-    print('perdu')
+    # regarder si la carte tire est rouge ou noire
+    if picked_color == guess :
+        print('Gagné')
+    else:
+        print('Perdu')
 
-# TODO, FIXME: epuiser le jeu de cartes
-#    ajouter un eporte de sortie
+print("Le jeu de cartes est épuisé !\n")
+
+#TODO ajouter une porte de sortie
