@@ -38,7 +38,7 @@ class Cheater(AI):
             else: print()
 
             return "p%d"%playable[0][0]
-            
+
 
         discardable = [ i+1 for (i,card) in
                         enumerate(game.current_hand.cards)
@@ -48,7 +48,7 @@ class Cheater(AI):
         # discard already played cards, doubles in my hand
         # fixme: discard doubles, if I see it in partner's hand
         # fixme: il me manque les cartes sup d'une pile morte
-        
+
         if discardable and (game.blue_coins<8):
             print ('Cheater would discard:', "d%d"%discardable[0], discardable)
             return "d%d"%discardable[0]
@@ -60,7 +60,7 @@ class Cheater(AI):
         if discardable2 and (game.blue_coins<8):
             print ('Cheater would discard2:', "d%d"%discardable2[0], discardable2)
             return "d%d"%discardable2[0]
-        
+
 
         ## Look at precious cards in other hand, to clue them
         precious = [ card for card in
@@ -89,7 +89,7 @@ class Cheater(AI):
                     return clue
                 print ("... but there's no blue coin left!")
 
-        
+
         # if reach here, can't play, can't discard safely, no card to clue-save
         # Let's give a random clue, to see if partner can unblock me
         if game.blue_coins >0:
@@ -120,6 +120,9 @@ class Cheater(AI):
         return act
 
 class Random(AI):
+    """
+    Plays randomly
+    """
     def play(self):
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5', 'p1', 'p2', 'p3', 'p4', 'p5']
         return(coups_possibles[randint(0,19)])
