@@ -2,6 +2,7 @@ setup.py
 hanabi/__init__.py
 hanabi/ai.py
 hanabi/ascii_art.py
+hanabi/autosave.py
 hanabi/deck.py
 hanabi/hanabi
 hanabi/test_deck.py
