@@ -27,11 +27,19 @@ class HandTest(unittest.TestCase):
     def test_basic_hand(self):
         self.assertEqual(self.hand3.__str__(),hanabi.deck.Card(hanabi.deck.Color.Red,1).str_color())
 
+    def setUp(self):
+        self.deck1 = hanabi.deck.Deck()
+        self.hand1 = hanabi.deck.Hand(self.deck1)
+        self.deck2 = self.deck1.shuffle()
+ 
     def test_len(self):
         self.assertEqual(5, len(self.hand1))
     
     def test_shuffle(self):
-        pass
+        self.deck1.shuffle()
+        mem = str(self.deck1)[0:len(repr(self.hand1))]
+        self.hand2 = hanabi.deck.Hand(self.deck1)
+        self.assertEqual(str(self.hand2), mem)
 
 
     # test normal functions
