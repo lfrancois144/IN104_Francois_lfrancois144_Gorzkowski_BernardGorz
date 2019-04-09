@@ -15,6 +15,10 @@ class CardTest(unittest.TestCase):
 
 class HandTest(unittest.TestCase):
     # test __special__ functions
+    deck1 = hanabi.deck.Deck()
+
+    def test_basic_hand(self):
+        pass
     def setUp(self):
         self.deck1=hanabi.deck.Deck()
         self.hand1=hanabi.deck.Hand(self.deck1)
