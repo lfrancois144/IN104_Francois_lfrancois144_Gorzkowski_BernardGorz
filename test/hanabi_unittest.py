@@ -18,10 +18,14 @@ class HandTest(unittest.TestCase):
     def setUp(self):
         self.deck1=hanabi.deck.Deck()
         self.hand1=hanabi.deck.Hand(self.deck1)
+        self.deck2=self.deck1.shuffle()
+        self.hand2=hanabi.deck.Hand(self.deck2)
     def test_len(self):
         self.assertEqual(5, len(self.hand1))
-
     
+    def test_shuffle(self):
+        
+
 
     # test normal functions
     pass
