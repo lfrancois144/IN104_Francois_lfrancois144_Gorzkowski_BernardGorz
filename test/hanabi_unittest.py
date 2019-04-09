@@ -15,16 +15,18 @@ class CardTest(unittest.TestCase):
 
 class HandTest(unittest.TestCase):
     # test __special__ functions
-    deck1 = hanabi.deck.Deck()
-
-    def test_basic_hand(self):
-        pass
-
+    
     def setUp(self):
         self.deck1 = hanabi.deck.Deck()
         self.hand1 = hanabi.deck.Hand(self.deck1)
-        self.deck2 = self.deck1.shuffle()
- 
+        self.deck1.shuffle()
+
+        self.deck3 = hanabi.deck.Deck()
+        self.hand3 = hanabi.deck.Hand(self.deck3,1)
+
+    def test_basic_hand(self):
+        self.assertEqual(self.hand3.__str__(),hanabi.deck.Card(hanabi.deck.Color.Red,1).str_color())
+
     def test_len(self):
         self.assertEqual(5, len(self.hand1))
     
