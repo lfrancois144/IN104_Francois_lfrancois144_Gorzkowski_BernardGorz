@@ -27,11 +27,6 @@ class HandTest(unittest.TestCase):
     def test_basic_hand(self):
         self.assertEqual(self.hand3.__str__(),hanabi.deck.Card(hanabi.deck.Color.Red,1).str_color())
 
-    def setUp(self):
-        self.deck1 = hanabi.deck.Deck()
-        self.hand1 = hanabi.deck.Hand(self.deck1)
-        self.deck2 = self.deck1.shuffle()
- 
     def test_len(self):
         self.assertEqual(5, len(self.hand1))
     
