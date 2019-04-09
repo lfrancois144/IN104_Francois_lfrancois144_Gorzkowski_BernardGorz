@@ -19,22 +19,19 @@ class HandTest(unittest.TestCase):
 
     def test_basic_hand(self):
         pass
+
     def setUp(self):
-        self.deck1=hanabi.deck.Deck()
-        self.hand1=hanabi.deck.Hand(self.deck1)
-        self.deck2=self.deck1.shuffle()
-        
-        print(self.deck2)
+        self.deck1 = hanabi.deck.Deck()
+        self.hand1 = hanabi.deck.Hand(self.deck1)
+        self.deck2 = self.deck1.shuffle()
  
     def test_len(self):
         self.assertEqual(5, len(self.hand1))
     
     def test_shuffle(self):
         self.deck1.shuffle()
-        mem=str(self.deck1)[0:len(repr(self.hand1))]
-        self.hand2=hanabi.deck.Hand(self.deck1)
-     #   print(self.hand2.__str__())
-     #   print(mem)
+        mem = str(self.deck1)[0:len(repr(self.hand1))]
+        self.hand2 = hanabi.deck.Hand(self.deck1)
         self.assertEqual(str(self.hand2), mem)
 
 
