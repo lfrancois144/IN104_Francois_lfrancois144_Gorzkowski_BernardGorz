@@ -132,3 +132,24 @@ class Random(AI):
             return(coups_possibles[randint(5,19)])
         else:
             return(coups_possibles[randint(0,19)])
+
+class BigBrain(AI):
+    """
+    A player set to become the best of all
+    """
+    def play(self):
+        game=self.game
+        coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
+        
+
+#TODO si on a un 1 et que la pile correspondante ne contient aucune carte
+
+#TODO check si les cartes en main peuvent être posées
+
+#TODO créer une liste des cartes jouées -> si on a dans la main une carte déjà posée => Discard
+
+#TODO si le mate a une carte jouable en main -> 2 indices (couleur + num)
+
+#TODO si on a un 5 en main -> pas le drop
+
+#TODO si le mate a un 5 : indice (num)
