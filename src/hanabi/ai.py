@@ -140,8 +140,42 @@ class BigBrain(AI):
     def play(self):
         game=self.game
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
-        
+        possible_colors={'R':'Color.Red', 'B':'Color.Blue', 'G':'Color.Green', 'W':'Color.White', 'Y':'Color.Yellow'}
+        one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
+        do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
+        #Vérification des cartes en main
+        used_piles=0
+        card_nb=1
+        for c in one_cards:
+            for card in game.hands[game.other_player].cards:
+                if card.__eq__(c):
+                    print("Other player have a 1, must tell him")
+                    return('c'+str(card_nb))
+                card_nb+=1
 
+        for c in possible_colors:
+            if game.piles.get(possible_colors.get(c))!=None:
+                used_piles+=1
+                
+        i=1
+        while i<14:
+            if game.current_hand.str_clue()[i]=='1':
+                print('Detected a 1')
+                if used_piles==0:
+                    print('Playing the 1 because the board is empty')
+                    return("p"+str(i//3+1))
+                if game.current_hand.str_clue()[i]!='*':
+                    print('I know the color')
+                    card_color=possible_colors(game.current_hand.str_clue()[i-1])
+                    if game.piles.get(card_color)==0:
+                        card_played=i//3+1
+                        print('Use case happened')
+                        return('p'+str(card_played))
+            elif game.current_hand.str_clue()[i]=='5':
+                do_not_discard[i//3+1]=1
+            i+=3
+        print('Plays randomly')
+        return(coups_possibles[randint(0,19)])
 #TODO si on a un 1 et que la pile correspondante ne contient aucune carte
 
 #TODO check si les cartes en main peuvent être posées

@@ -140,8 +140,20 @@ class BigBrain(AI):
     def play(self):
         game=self.game
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
+        possible_colors={'R':'Color.Red', 'B':'Color.Blue', 'G':'Color.Green', 'W':'Color.White', 'Y':'Color.Yellow'}
+        do_not_discard=-1
+        #Vérification des cartes en main
+        i=0
+        while i<14:
+            if game.current_hand.str_clue()[i]=='1':
+                if game.current_hand.str_clue()[i]!='*':
+                    card_color=possible_colors(game.current_hand.str_clue()[i-1])
+                    if game.piles.get(card_color)==0:
+                        card_played=i//3+1
+                        return('p'+str(card_played))
+            i+=3
         
-
+        return(coups_possibles[randint(0,19)])
 #TODO si on a un 1 et que la pile correspondante ne contient aucune carte
 
 #TODO check si les cartes en main peuvent être posées
