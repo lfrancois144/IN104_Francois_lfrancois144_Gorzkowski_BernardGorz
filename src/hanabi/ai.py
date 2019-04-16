@@ -2,6 +2,7 @@
 Artificial Intelligence to play Hanabi.
 """
 from random import *
+import hanabi
 
 class AI:
     """
@@ -135,6 +136,7 @@ class Random(AI):
 
 class BigBrain(AI):
     """
+<<<<<<< HEAD
     An AI that will beat them all
     """
     def play(self):
@@ -142,6 +144,69 @@ class BigBrain(AI):
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5'] 
 #TODO si on a un 1 et que la pile correspondante ne contient aucune carte
         if 
+=======
+    A player set to become the best of all
+    """
+    def play(self):
+        game=self.game
+        coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
+        possible_colors={'R':hanabi.deck.Color.Red, 'B':hanabi.deck.Color.Blue, 'G':hanabi.deck.Color.Green, 'W':hanabi.deck.Color.White, 'Y':hanabi.deck.Color.Yellow}
+        one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
+        do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
+        discard_list=[0,0,0,0,0]
+        #Vérification des cartes en main
+        used_piles=0
+        #Giving advices if possible
+        if game.blue_coins!=0:
+            for c in one_cards:
+                card_i=1
+                for card in game.hands[game.other_player].cards:
+                    if card.__eq__(c) and card.number_clue==False:
+                        print("Other player have a 1 and doesn't know it, must tell him")
+                        return('c1')
+                    card_i+=3
+
+            for c in one_cards:
+                card_i=1
+                for card in game.hands[game.other_player].cards:
+                    if card.__eq__(c) and card.color_clue==False:
+                        print("Other player knows he have a 1 but doesn't know the color")
+                        card_color=str(card.color)[0]
+                        return('c'+card_color)
+                    card_i+=1
+
+        #Checking if the board is empty, so that a 1 card can be played without knowing its color
+        for c in possible_colors:
+            if game.piles.get(possible_colors.get(c))!=0:
+                used_piles+=1 
+
+        #Playing cards, or including them in discard_list or do_not_discard
+        i=1
+        for card in game.current_hand.cards:
+            if card.number_clue=='1':
+                print('Detected a 1')
+                if used_piles==0:
+                    print('Playing the 1 because the board is empty')
+                    return("p"+str(i))
+                if card.color_clue != False:
+                    print('I know the color')
+                    card_color=str(card.color_clue)[0]
+                    if game.piles.get(card_color)==0:
+                        print('Use case happened')
+                        return('p'+str(i))
+                    #TODO add card on the discard_list
+            elif card.number_clue==5:
+                do_not_discard[i-1]=1
+            i+=1
+
+        
+
+
+        print('Plays randomly')
+        return(coups_possibles[randint(0,19)])
+#TODO si on a un 1 et que la pile correspondante ne contient aucune carte
+
+>>>>>>> 91f13d73bf44e8a7923f0f5cc710da3039ca87c4
 #TODO check si les cartes en main peuvent être posées
 
 #TODO créer une liste des cartes jouées -> si on a dans la main une carte déjà posée => Discard
@@ -150,6 +215,7 @@ class BigBrain(AI):
 
 #TODO si on a un 5 en main -> pas le drop
 
+<<<<<<< HEAD
 #TODO si le mate a un 5 : indice (num)
 
         if game.blue_coins==0:
@@ -158,3 +224,6 @@ class BigBrain(AI):
             return(coups_possibles[randint(5,19)])
         else:
             return(coups_possibles[randint(0,19)])        
+=======
+#TODO si le mate a un 5 : indice (num)
+>>>>>>> 91f13d73bf44e8a7923f0f5cc710da3039ca87c4
