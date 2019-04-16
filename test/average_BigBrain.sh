@@ -7,7 +7,7 @@ avg=0
 max=0
 
 if [ -z "$nb" ]; then
-    nb=200
+    nb=500
 fi
 
 for i in $(seq 1 $nb); do
