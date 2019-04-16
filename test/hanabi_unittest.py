@@ -69,7 +69,7 @@ class GameTest(unittest.TestCase):
 
 
     # lines 261, 295
-        
+
 
     # lines 295, 329
 
