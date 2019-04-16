@@ -184,14 +184,7 @@ class BigBrain(AI):
                 if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 1) :
                     print('Plays a safe card')
                     return("p"+str(i))
-<<<<<<< HEAD
-                
-=======
-                if game.piles.get(possible_colors.get(card_color)) > (int(card.number_clue) - 1) :
-                    print('Discards a safe card')
-                    return("d"+str(i))
 
->>>>>>> e4399959fea2d246248e00c820a39d39a2333b98
             i+=1
 
 
@@ -223,7 +216,6 @@ class BigBrain(AI):
                     if card.color_clue==False:
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
                         return('c'+str(card.color))
-<<<<<<< HEAD
                 
                 elif card.number<top_card_number+1:
                     if card.number_clue==False:
@@ -287,12 +279,6 @@ class BigBrain(AI):
 
             print("Discards a random card")
             return("d"+str(randint(1,5)))
-=======
-                    
-            print("Giving a random clue")
-            return('c'+random_list[randint(0,9)])
-                
->>>>>>> e4399959fea2d246248e00c820a39d39a2333b98
 
 
         print('Plays randomly')
