@@ -158,6 +158,8 @@ class BigBrain(AI):
         #Playing cards, or including them in discard_list or do_not_discard
         i=1
         for card in game.current_hand.cards:
+            
+            #Playing a 1 if nothing has been played
             if card.number_clue=='1':
                 print('Detected a 1')
                 if used_piles==0:
@@ -172,8 +174,22 @@ class BigBrain(AI):
                     #TODO add card on the discard_list
             elif card.number_clue==5:
                 do_not_discard[i-1]=1
+            
+            #Discarding an useless card or playing a card you know works
+            if (card.color_clue != False) and (card.number_clue != False):
+                card_color=str(card.color_clue)[0]
+                if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 1) :
+                    print('Plays a safe card')
+                    return("p"+str(i))
+                if game.piles.get(possible_colors.get(card_color)) > (int(card.number_clue) - 1) :
+                    print('Discards a safe card')
+                    return("d"+str(i))
+
             i+=1
 
+
+
+        #Clues
         if game.blue_coins!=0:
             for c in one_cards:
                 for card in game.hands[game.other_player].cards:
