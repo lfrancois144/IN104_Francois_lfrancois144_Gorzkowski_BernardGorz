@@ -143,6 +143,7 @@ class BigBrain(AI):
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
         possible_colors={'R':hanabi.deck.Color.Red, 'B':hanabi.deck.Color.Blue, 'G':hanabi.deck.Color.Green, 'W':hanabi.deck.Color.White, 'Y':hanabi.deck.Color.Yellow}
         one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
+        random_list = ['1','2','3','4','5','R','B','G','W','Y']
         do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
         discard_list=[0,0,0,0,0]
         #Vérification des cartes en main
@@ -171,7 +172,9 @@ class BigBrain(AI):
                     if game.piles.get(possible_colors.get(card_color))==0:
                         print('Use case happened')
                         return('p'+str(i))
-                    #TODO add card on the discard_list
+                    else:
+                        discard_list[i-1]=1
+                        
             elif card.number_clue==5:
                 do_not_discard[i-1]=1
             
@@ -200,7 +203,6 @@ class BigBrain(AI):
                 for card in game.hands[game.other_player].cards:
                     if card.__eq__(c) and card.color_clue==False:
                         print("Other player knows he have a 1 but doesn't know the color")
-                        card_color=str(card.color)[0]
                         return('c'+card_color)
 
 
