@@ -2,3 +2,8 @@ Commit : "clues improvement"
 tests = 500
 avg = 5.50
 max = 15
+
+Commit : "discard"
+tests = 500
+avg = 12.04
+max = 19
