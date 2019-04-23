@@ -4,6 +4,8 @@ Artificial Intelligence to play Hanabi.
 from random import *
 import hanabi
 
+import itertools
+
 class AI:
     """
     AI base class: some basic functions, game analysis.
@@ -11,7 +13,18 @@ class AI:
     def __init__(self, game):
         self.game = game
 
+    @property
+    def other_hands(self):
+        "The list of other players' hands."
+        return self.game.hands[1:]
 
+    @property
+    def other_players_cards(self):
+        "All of other players's cards, concatenated in a single list."
+        #return sum([x.cards for x in self.other_hands], [])
+        return list(itertools.chain.from_iterable([hand.cards for hand in self.other_hands]))
+
+        
 class Cheater(AI):
     """
     This player can see his own cards!
@@ -55,8 +68,9 @@ class Cheater(AI):
             return "d%d"%discardable[0]
 
         ## 2nd type of discard: I have a card, and my partner too
+        
         discardable2 = [ i+1 for (i,card) in enumerate(game.current_hand.cards)
-                         if card in game.hands[game.other_player].cards
+                         if card in self.other_players_cards
                        ]
         if discardable2 and (game.blue_coins<8):
             print ('Cheater would discard2:', "d%d"%discardable2[0], discardable2)
@@ -65,7 +79,7 @@ class Cheater(AI):
 
         ## Look at precious cards in other hand, to clue them
         precious = [ card for card in
-                     game.hands[game.other_player].cards
+                     self.other_players_cards
                      if (1+game.discard_pile.cards.count(card))
                          == game.deck.card_count[card.number]
                    ]
@@ -80,6 +94,7 @@ class Cheater(AI):
                     break
                 if p.color_clue is False:
                     clue = "c%s"%p.color
+                    clue = clue[:2]   # quick fix, with 3+ players, can't clue cRed anymore, only cR
                     break
                 # this one was tricky:
                 # don't want to give twice the same clue
@@ -194,9 +209,8 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
-            for card in game.hands[game.other_player].cards:
+            for card in self.other_players_cards:
                 card_color=str(card.color)[0]
-
                 if card.number==5 and card.number_clue==False:
                     print("Saw a 5, other player have to save it")
                     return('c5')
@@ -218,7 +232,7 @@ class BigBrain(AI):
 
                     if card.color_clue==False:
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
-                        return('c'+str(card.color))
+                        return('c'+card_color)
                 
                 elif card.number<top_card_number+1:
                     if card.number_clue==False:
@@ -226,8 +240,9 @@ class BigBrain(AI):
                         return('c'+str(card.number))
 
                     if card.color_clue==False:
+                        print(card.color)
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+str(card.color))
+                        return('c'+card_color)
 
             print("Giving a random clue")
             return('c'+random_list[randint(0,9)])
