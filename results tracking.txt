@@ -12,3 +12,8 @@ Correction bug "used_pile_i":
 tests = 500
 avg = 12.74
 max = 19
+
+Commit  : "line swap"
+tests = 500
+avg = 13.23
+max = 19
