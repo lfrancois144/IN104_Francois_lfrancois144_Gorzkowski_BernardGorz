@@ -157,13 +157,13 @@ class BigBrain(AI):
 
         #Checking if the board is empty, so that a 1 card can be played without knowing its color
         for c in possible_colors:
-            if game.piles.get(possible_colors.get(c))==1:
+            if game.piles.get(possible_colors.get(c))>=1:
                 used_pile_1+=1
-            if game.piles.get(possible_colors.get(c))==2:
+            if game.piles.get(possible_colors.get(c))>=2:
                 used_pile_2+=1
-            if game.piles.get(possible_colors.get(c))==3:
+            if game.piles.get(possible_colors.get(c))>=3:
                 used_pile_3+=1
-            if game.piles.get(possible_colors.get(c))==4:
+            if game.piles.get(possible_colors.get(c))>=4:
                 used_pile_4+=1
             if game.piles.get(possible_colors.get(c))==5:
                 used_pile_5+=1

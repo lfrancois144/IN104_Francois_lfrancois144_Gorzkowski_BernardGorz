@@ -19,5 +19,6 @@ for i in $(seq 1 $nb); do
 done
 let "avg=$avg/$nb"
 
+echo tests=$nb
 echo avg=$avg | sed 's/..$/.&/'
 echo max=$max

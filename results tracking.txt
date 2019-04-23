@@ -7,3 +7,8 @@ Commit : "discard"
 tests = 500
 avg = 12.04
 max = 19
+
+Correction bug "used_pile_i":
+tests = 500
+avg = 12.74
+max = 19
