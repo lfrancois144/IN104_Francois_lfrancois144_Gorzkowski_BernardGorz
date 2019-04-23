@@ -17,3 +17,8 @@ Commit  : "line swap"
 tests = 500
 avg = 13.23
 max = 19
+
+Commit : "2nd line swap":
+tests = 500
+avg = 14.10
+max = 21
