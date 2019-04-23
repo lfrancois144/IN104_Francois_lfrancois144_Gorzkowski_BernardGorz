@@ -184,6 +184,9 @@ class BigBrain(AI):
                 if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 1) :
                     print('Plays a safe card')
                     return("p"+str(i))
+                if game.piles.get(possible_colors.get(card_color)) > (int(card.number_clue) - 1) :
+                    print('Discards a safe card')
+                    return("d"+str(i))
 
             i+=1
 
@@ -216,7 +219,6 @@ class BigBrain(AI):
                     if card.color_clue==False:
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
                         return('c'+str(card.color))
-                
                 elif card.number<top_card_number+1:
                     if card.number_clue==False:
                         print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be discarded")
@@ -279,14 +281,34 @@ class BigBrain(AI):
 
             print("Discards a random card")
             return("d"+str(randint(1,5)))
-
+                    
+            print("Giving a random clue")
+            return('c'+random_list[randint(0,9)])
+                
+        #Discard intelligent de cartes si aucun move restant :
+        #if game.blue_coins==0:
+        if True:
+            color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
+            cards_in_game=[[3, 2, 2, 2, 1] for k in range(5)]
+            colors_in_game = [10]*5
+            numbers_in_game = [ 15, 10, 10, 10, 5]
+            for disc_card in game.discard_pile.cards:
+                card_color_ind = color_lines.get(str(disc_card.color)[0])
+                card_number_ind = int(disc_card.number)-1
+                cards_in_game[card_color_ind][card_number_ind] -= 1
+                colors_in_game[card_color_ind] -=1
+                numbers_in_game[card_number_ind] -=1
+            print(cards_in_game)
+            print(colors_in_game)
+            print(numbers_in_game)
 
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
-#TODO check si les cartes en main peuvent être posées
-
-#TODO créer une liste des cartes jouées -> si on a dans la main une carte déjà posée => Discard
 
 #TODO si le mate a une carte jouable en main -> 2 indices (couleur + num)
 
 #TODO si le mate a un 5 : indice (num)
+
+#TODO toutes si les cartes d'une valeur ont ete placees, on peut automatiquement discard des cartes de cette valeur (et donner de sindices dessus ?)
+
+#TODO definir des priorites entre les cartes au lieu de l'ordre de la main
