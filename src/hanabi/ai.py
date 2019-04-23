@@ -229,15 +229,6 @@ class BigBrain(AI):
                     print("Saw a 5, other player have to save it")
                     return('c5')
 
-                if card.number==1:
-                    if card.number_clue==False:
-                        print("Other player have a 1 and doesn't know it, must tell him")
-                        return('c1')
-
-                    if card.color_clue==False:
-                        print("Other player knows he have a 1 but doesn't know the color")
-                        return('c'+card_color)
-
                 top_card_number=game.piles.get(possible_colors.get(card_color))
                 if card.number==top_card_number+1:
                     if card.number_clue==False:
@@ -273,39 +264,39 @@ class BigBrain(AI):
                         print('Discards a safe card')
                         return("d"+str(i))
 
-                if used_pile_1==5 and card.number==1:
+                if used_pile_1==5 and card.number_clue==1:
                     print("All piles have at least a 1")
                     return("d"+str(i))
 
-                if used_pile_2==5 and card.number==2:
+                if used_pile_2==5 and card.number_clue==2:
                     print("All piles have at least a 2")
                     return("d"+str(i))
 
-                if used_pile_3==5 and card.number==3:
+                if used_pile_3==5 and card.number_clue==3:
                     print("All piles have at least a 3")
                     return("d"+str(i))
 
-                if used_pile_4==5 and card.number==4:
+                if used_pile_4==5 and card.number_clue==4:
                     print("All piles have at least a 4")
                     return("d"+str(i))
 
-                if game.piles.get(hanabi.deck.Color.Red)==5 and str(card.color)=='Red':
+                if game.piles.get(hanabi.deck.Color.Red)==5 and str(card.color_clue)=='Red':
                     print("Red pile is complete")
                     return("d"+str(i))
 
-                if game.piles.get(hanabi.deck.Color.Blue)==5 and str(card.color)=='Blue':
+                if game.piles.get(hanabi.deck.Color.Blue)==5 and str(card.color_clue)=='Blue':
                     print("Blue pile is complete")
                     return("d"+str(i))
             
-                if game.piles.get(hanabi.deck.Color.Green)==5 and str(card.color)=='Green':
+                if game.piles.get(hanabi.deck.Color.Green)==5 and str(card.color_clue)=='Green':
                     print("Green pile is complete")
                     return("d"+str(i))
 
-                if game.piles.get(hanabi.deck.Color.White)==5 and str(card.color)=='White':
+                if game.piles.get(hanabi.deck.Color.White)==5 and str(card.color_clue)=='White':
                     print("White pile is complete")
                     return("d"+str(i))
 
-                if game.piles.get(hanabi.deck.Color.Yellow)==5 and str(card.color)=='Yellow':
+                if game.piles.get(hanabi.deck.Color.Yellow)==5 and str(card.color_clue)=='Yellow':
                     print("Yellow pile is complete")
                     return("d"+str(i))
 
@@ -318,9 +309,10 @@ class BigBrain(AI):
             print("Discards a random card")
             return("d"+str(randint(1,5)))
 
-
         if game.blue_coins!=0:
             print("Giving a random clue")
+            if len(possible_clue)==0:
+                return('c'+random_list[randint(0,9)])
             return('c'+possible_clue[randint(0,len(possible_clue)-1)])
 
 
