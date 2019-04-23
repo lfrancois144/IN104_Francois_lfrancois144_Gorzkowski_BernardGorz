@@ -258,6 +258,11 @@ class BigBrain(AI):
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
                         return('c'+card_color)
 
+                if card.number_clue==False:
+                    possible_clue.append(str(card.number))
+                if card.color_clue==False:
+                    possible_clue.append(card_color)
+
 
         #Discard
         if game.blue_coins<8:   
