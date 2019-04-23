@@ -309,13 +309,16 @@ class BigBrain(AI):
             for card in game.current_hand.cards:
                 if (card.color_clue != False) and (card.number_clue == False):
 
+        if game.blue_coins<8:
+            print("Discards a random card")
+            return("d"+str(randint(1,5)))
+
+
         if game.blue_coins!=0:
             print("Giving a random clue")
             return('c'+possible_clue[randint(0,len(possible_clue)-1)])
 
-        if game.blue_coins<8:
-            print("Discards a random card")
-            return("d"+str(randint(1,5)))
+
 
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
