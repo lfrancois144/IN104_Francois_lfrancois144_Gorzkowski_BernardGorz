@@ -161,6 +161,7 @@ class BigBrain(AI):
         random_list = ['1','2','3','4','5','R','B','G','W','Y']
         do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
         discard_list=[0,0,0,0,0]
+        possible_clue=[]
         #Vérification des cartes en main
         used_pile_1=0
         used_pile_2=0
@@ -244,8 +245,11 @@ class BigBrain(AI):
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
                         return('c'+card_color)
 
-            print("Giving a random clue")
-            return('c'+random_list[randint(0,9)])
+                if card.number_clue==False:
+                    possible_clue.append(str(card.number))
+                if card.color_clue==False:
+                    possible_clue.append(card_color)
+
                 
         #Discard intelligent de cartes si aucun move restant :
         #TODO finir cette partie, prendre en compte les cartes sur la table jouees
@@ -310,9 +314,13 @@ class BigBrain(AI):
 
                 i+=1
 
+        if game.blue_coins!=0:
+            print("Giving a random clue")
+            return('c'+possible_clue[randint(0,len(possible_clue)-1)])
+
+        if game.blue_coins<8:
             print("Discards a random card")
             return("d"+str(randint(1,5)))
-
 
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])

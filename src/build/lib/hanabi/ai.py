@@ -250,8 +250,6 @@ class BigBrain(AI):
                 if card.color_clue==False:
                     possible_clue.append(card_color)
 
-
-
                 
         #Discard intelligent de cartes si aucun move restant :
         #TODO finir cette partie, prendre en compte les cartes sur la table jouees
@@ -316,7 +314,6 @@ class BigBrain(AI):
 
                 i+=1
 
-
         if game.blue_coins!=0:
             print("Giving a random clue")
             return('c'+possible_clue[randint(0,len(possible_clue)-1)])
@@ -324,7 +321,6 @@ class BigBrain(AI):
         if game.blue_coins<8:
             print("Discards a random card")
             return("d"+str(randint(1,5)))
-
 
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
