@@ -306,8 +306,8 @@ class BigBrain(AI):
 
                 i+=1
             
-            for card in game.current_hand.cards:
-                if (card.color_clue != False) and (card.number_clue == False):
+#            for card in game.current_hand.cards:
+#                if (card.color_clue != False) and (card.number_clue == False):
 
         if game.blue_coins<8:
             print("Discards a random card")
