@@ -183,6 +183,19 @@ class BigBrain(AI):
                 used_pile_4+=1
             if game.piles.get(possible_colors.get(c))==5:
                 used_pile_5+=1
+        
+        #Check what types of cards have been discarded
+        #TODO finir cette partie, prendre en compte les cartes sur la table jouees
+        #TODO calculer la meilleure proba de pas se planter en fonction des indices qu'on a
+        
+        color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
+        colors_in_game = [10]*5
+        numbers_in_game = [ 15, 10, 10, 10, 5]
+        for disc_card in game.discard_pile.cards:
+            card_color_ind = color_lines.get(str(disc_card.color)[0])
+            card_number_ind = int(disc_card.number)-1
+            colors_in_game[card_color_ind] -=1
+            numbers_in_game[card_number_ind] -=1
 
 
         #Playing cards, or including them in discard_list or do_not_discard
@@ -245,27 +258,6 @@ class BigBrain(AI):
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
                         return('c'+card_color)
 
-                if card.number_clue==False:
-                    possible_clue.append(str(card.number))
-                if card.color_clue==False:
-                    possible_clue.append(card_color)
-
-                
-        #Discard intelligent de cartes si aucun move restant :
-        #TODO finir cette partie, prendre en compte les cartes sur la table jouees
-        #TODO calculer la meilleure proba de pas se planter en fonction des indices qu'on a
-        if game.blue_coins==0:
-            color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
-            colors_in_game = [10]*5
-            numbers_in_game = [ 15, 10, 10, 10, 5]
-            for disc_card in game.discard_pile.cards:
-                card_color_ind = color_lines.get(str(disc_card.color)[0])
-                card_number_ind = int(disc_card.number)-1
-                colors_in_game[card_color_ind] -=1
-                numbers_in_game[card_number_ind] -=1
-            print(colors_in_game)
-            print(numbers_in_game)
-
 
         #Discard
         if game.blue_coins<8:   
@@ -313,6 +305,9 @@ class BigBrain(AI):
                     return("d"+str(i))
 
                 i+=1
+            
+            for card in game.current_hand.cards:
+                if (card.color_clue != False) and (card.number_clue == False):
 
         if game.blue_coins<8:
             print("Discards a random card")
