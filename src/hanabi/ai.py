@@ -172,13 +172,13 @@ class BigBrain(AI):
 
         #Checking if the board is empty, so that a 1 card can be played without knowing its color
         for c in possible_colors:
-            if game.piles.get(possible_colors.get(c))==1:
+            if game.piles.get(possible_colors.get(c))>=1:
                 used_pile_1+=1
-            if game.piles.get(possible_colors.get(c))==2:
+            if game.piles.get(possible_colors.get(c))>=2:
                 used_pile_2+=1
-            if game.piles.get(possible_colors.get(c))==3:
+            if game.piles.get(possible_colors.get(c))>=3:
                 used_pile_3+=1
-            if game.piles.get(possible_colors.get(c))==4:
+            if game.piles.get(possible_colors.get(c))>=4:
                 used_pile_4+=1
             if game.piles.get(possible_colors.get(c))==5:
                 used_pile_5+=1
@@ -209,9 +209,8 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
-            for card in game.hands[game.other_player].cards:
+            for card in self.other_players_cards:
                 card_color=str(card.color)[0]
-
                 if card.number==5 and card.number_clue==False:
                     print("Saw a 5, other player have to save it")
                     return('c5')
@@ -233,7 +232,7 @@ class BigBrain(AI):
 
                     if card.color_clue==False:
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
-                        return('c'+str(card.color))
+                        return('c'+card_color)
                 
                 elif card.number<top_card_number+1:
                     if card.number_clue==False:
@@ -241,8 +240,9 @@ class BigBrain(AI):
                         return('c'+str(card.number))
 
                     if card.color_clue==False:
+                        print(card.color)
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+str(card.color))
+                        return('c'+card_color)
 
             print("Giving a random clue")
             return('c'+random_list[randint(0,9)])

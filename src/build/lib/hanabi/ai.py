@@ -4,6 +4,8 @@ Artificial Intelligence to play Hanabi.
 from random import *
 import hanabi
 
+import itertools
+
 class AI:
     """
     AI base class: some basic functions, game analysis.
@@ -11,7 +13,18 @@ class AI:
     def __init__(self, game):
         self.game = game
 
+    @property
+    def other_hands(self):
+        "The list of other players' hands."
+        return self.game.hands[1:]
 
+    @property
+    def other_players_cards(self):
+        "All of other players's cards, concatenated in a single list."
+        #return sum([x.cards for x in self.other_hands], [])
+        return list(itertools.chain.from_iterable([hand.cards for hand in self.other_hands]))
+
+        
 class Cheater(AI):
     """
     This player can see his own cards!
@@ -55,8 +68,9 @@ class Cheater(AI):
             return "d%d"%discardable[0]
 
         ## 2nd type of discard: I have a card, and my partner too
+        
         discardable2 = [ i+1 for (i,card) in enumerate(game.current_hand.cards)
-                         if card in game.hands[game.other_player].cards
+                         if card in self.other_players_cards
                        ]
         if discardable2 and (game.blue_coins<8):
             print ('Cheater would discard2:', "d%d"%discardable2[0], discardable2)
@@ -65,7 +79,7 @@ class Cheater(AI):
 
         ## Look at precious cards in other hand, to clue them
         precious = [ card for card in
-                     game.hands[game.other_player].cards
+                     self.other_players_cards
                      if (1+game.discard_pile.cards.count(card))
                          == game.deck.card_count[card.number]
                    ]
@@ -80,6 +94,7 @@ class Cheater(AI):
                     break
                 if p.color_clue is False:
                     clue = "c%s"%p.color
+                    clue = clue[:2]   # quick fix, with 3+ players, can't clue cRed anymore, only cR
                     break
                 # this one was tricky:
                 # don't want to give twice the same clue
@@ -151,19 +166,22 @@ class BigBrain(AI):
         used_pile_2=0
         used_pile_3=0
         used_pile_4=0
+        used_pile_5=0
         #Giving advices if possible
 
 
         #Checking if the board is empty, so that a 1 card can be played without knowing its color
         for c in possible_colors:
-            if game.piles.get(possible_colors.get(c))==1:
+            if game.piles.get(possible_colors.get(c))>=1:
                 used_pile_1+=1
-            if game.piles.get(possible_colors.get(c))==2:
+            if game.piles.get(possible_colors.get(c))>=2:
                 used_pile_2+=1
-            if game.piles.get(possible_colors.get(c))==3:
+            if game.piles.get(possible_colors.get(c))>=3:
                 used_pile_3+=1
-            if game.piles.get(possible_colors.get(c))==4:
+            if game.piles.get(possible_colors.get(c))>=4:
                 used_pile_4+=1
+            if game.piles.get(possible_colors.get(c))==5:
+                used_pile_5+=1
 
 
         #Playing cards, or including them in discard_list or do_not_discard
@@ -184,19 +202,15 @@ class BigBrain(AI):
                 if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 1) :
                     print('Plays a safe card')
                     return("p"+str(i))
-                if game.piles.get(possible_colors.get(card_color)) > (int(card.number_clue) - 1) :
-                    print('Discards a safe card')
-                    return("d"+str(i))
-
+                
             i+=1
 
 
 
         #Clues
         if game.blue_coins!=0:
-            for card in game.hands[game.other_player].cards:
+            for card in self.other_players_cards:
                 card_color=str(card.color)[0]
-
                 if card.number==5 and card.number_clue==False:
                     print("Saw a 5, other player have to save it")
                     return('c5')
@@ -218,18 +232,35 @@ class BigBrain(AI):
 
                     if card.color_clue==False:
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
-                        return('c'+str(card.color))
+                        return('c'+card_color)
+                
                 elif card.number<top_card_number+1:
                     if card.number_clue==False:
                         print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be discarded")
                         return('c'+str(card.number))
 
                     if card.color_clue==False:
+                        print(card.color)
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+str(card.color))
+                        return('c'+card_color)
 
             print("Giving a random clue")
             return('c'+random_list[randint(0,9)])
+                
+        #Discard intelligent de cartes si aucun move restant :
+        #TODO finir cette partie, prendre en compte les cartes sur la table jouees
+        #TODO calculer la meilleure proba de pas se planter en fonction des indices qu'on a
+        if game.blue_coins==0:
+            color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
+            colors_in_game = [10]*5
+            numbers_in_game = [ 15, 10, 10, 10, 5]
+            for disc_card in game.discard_pile.cards:
+                card_color_ind = color_lines.get(str(disc_card.color)[0])
+                card_number_ind = int(disc_card.number)-1
+                colors_in_game[card_color_ind] -=1
+                numbers_in_game[card_number_ind] -=1
+            print(colors_in_game)
+            print(numbers_in_game)
 
 
         #Discard
@@ -281,26 +312,7 @@ class BigBrain(AI):
 
             print("Discards a random card")
             return("d"+str(randint(1,5)))
-                    
-            print("Giving a random clue")
-            return('c'+random_list[randint(0,9)])
-                
-        #Discard intelligent de cartes si aucun move restant :
-        #if game.blue_coins==0:
-        if True:
-            color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
-            cards_in_game=[[3, 2, 2, 2, 1] for k in range(5)]
-            colors_in_game = [10]*5
-            numbers_in_game = [ 15, 10, 10, 10, 5]
-            for disc_card in game.discard_pile.cards:
-                card_color_ind = color_lines.get(str(disc_card.color)[0])
-                card_number_ind = int(disc_card.number)-1
-                cards_in_game[card_color_ind][card_number_ind] -= 1
-                colors_in_game[card_color_ind] -=1
-                numbers_in_game[card_number_ind] -=1
-            print(cards_in_game)
-            print(colors_in_game)
-            print(numbers_in_game)
+
 
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
