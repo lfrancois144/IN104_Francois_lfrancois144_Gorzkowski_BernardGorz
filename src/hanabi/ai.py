@@ -354,6 +354,11 @@ class BigBrain(AI):
 #            print("Yolo")
 #            return('p'+random_list[randint(0,4)])
 
+            i = 1
+            for card in game.current_hand.cards:
+                if (card.color_clue == False) and (card.number_clue == False):
+                    return("d"+str(i))
+                i += 1
 
         if game.blue_coins<8:
             print("Discards a random card")

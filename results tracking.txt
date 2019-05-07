@@ -29,3 +29,9 @@ tests = 500
 avg = 13.12
 max = 19
 min = 9
+
+Commit : "discard unknown cards first"
+tests = 500
+avg = 13.95
+max = 19
+min = 8

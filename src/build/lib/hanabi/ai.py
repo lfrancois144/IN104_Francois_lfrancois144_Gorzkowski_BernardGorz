@@ -191,13 +191,42 @@ class BigBrain(AI):
         color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
         colors_in_game = [10]*5
         numbers_in_game = [ 15, 10, 10, 10, 5]
-#        deck_matrix = [[ 3, 2, 2, 2, 1]*5]
+        deck_matrix = [[ 3, 2, 2, 2, 1],[ 3, 2, 2, 2, 1],[ 3, 2, 2, 2, 1],[ 3, 2, 2, 2, 1],[ 3, 2, 2, 2, 1]]
         for disc_card in game.discard_pile.cards:
             card_color_ind = color_lines.get(str(disc_card.color)[0])
             card_number_ind = int(disc_card.number)-1
             colors_in_game[card_color_ind] -=1
             numbers_in_game[card_number_ind] -=1
-#            deck_matrix[card_color_ind][card_number_ind] -=1
+            deck_matrix[card_color_ind][card_number_ind] -=1
+
+        color_count = 0
+        for c in possible_colors:
+            if game.piles.get(possible_colors.get(c))>=1:
+                colors_in_game[color_count] -=1
+                numbers_in_game[0] -=1
+                deck_matrix[color_count][0] -=1
+
+            if game.piles.get(possible_colors.get(c))>=2:
+                colors_in_game[color_count] -=1
+                numbers_in_game[1] -=1
+                deck_matrix[color_count][1] -=1
+
+            if game.piles.get(possible_colors.get(c))>=3:
+                colors_in_game[color_count] -=1
+                numbers_in_game[2] -=1
+                deck_matrix[color_count][2] -=1
+
+            if game.piles.get(possible_colors.get(c))>=4:
+                colors_in_game[color_count] -=1
+                numbers_in_game[3] -=1
+                deck_matrix[color_count][3] -=1
+
+            if game.piles.get(possible_colors.get(c))==5:
+                colors_in_game[color_count] -=1
+                numbers_in_game[4] -=1
+                deck_matrix[color_count][4] -=1
+
+            color_count += 1
 
 
         #Playing cards, or including them in discard_list or do_not_discard
@@ -325,6 +354,11 @@ class BigBrain(AI):
 #            print("Yolo")
 #            return('p'+random_list[randint(0,4)])
 
+            i = 1
+            for card in game.current_hand.cards:
+                if (card.color_clue == False) and (card.number_clue == False):
+                    return("d"+str(i))
+                i += 1
 
         if game.blue_coins<8:
             print("Discards a random card")
