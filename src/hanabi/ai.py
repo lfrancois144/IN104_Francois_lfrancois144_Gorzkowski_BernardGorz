@@ -373,9 +373,6 @@ class BigBrain(AI):
 #            for card in game.current_hand.cards:
 #                if (card.color_clue != False) and (card.number_clue == False):
 
-#        if game.red_coins<2 and game.blue_coins==8:
-#            print("Yolo")
-#            return('p'+random_list[randint(0,4)])
 
         if game.blue_coins<8:
 
@@ -401,6 +398,12 @@ class BigBrain(AI):
 
             print("Discards a random card")
             return("d"+str(randint(1,5)))
+        
+
+        #TODO smart yolo : for instance plays a 3 if it sees piles of 2's
+        if game.red_coins<2 and game.blue_coins==8:
+            print("Yolo")
+            return('p'+random_list[randint(0,4)])
 
         if game.blue_coins!=0:
             print("Giving a random clue")
