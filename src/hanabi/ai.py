@@ -162,16 +162,21 @@ class BigBrain(AI):
         do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
         discard_list=[0,0,0,0,0]
         possible_clue=[]
+        playable_plus1={'R':0, 'B':0, 'G':0, 'W':0, 'Y':0}      #RBGWY
         #Vérification des cartes en main
         used_pile_1=0
         used_pile_2=0
         used_pile_3=0
         used_pile_4=0
         used_pile_5=0
-        #Giving advices if possible
+        
+        for card in game.current_hand.cards:
+            if (card.number_clue != False) and (card.color_clue != False):
+                card_color=str(card.color_clue)[0]
+                if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 2):
+                    playable_plus1[card_color]=1
 
-
-        #Checking if the board is empty, so that a 1 card can be played without knowing its color
+        
         for c in possible_colors:
             if game.piles.get(possible_colors.get(c))>=1:
                 used_pile_1+=1
@@ -239,12 +244,28 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
+    #        for card in self.other_players_cards:
+   #             card_color=str(card.color)[0]
+  #              if card.number==5 and card.number_clue==False:
+ #                   print("Clue 5")
+#                    return('c5')
+#
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
-                if card.number==5 and card.number_clue==False:
-                    print("Saw a 5, other player have to save it")
-                    return('c5')
+                if (playable_plus1[card_color] == 1) and game.piles.get(possible_colors.get(card_color)) == card.number - 1:
+                    if card.number_clue == False:
+                        print("Planning clue")
+                        return('c'+str(card.number))
 
+                    if card.color_clue == False:
+                        print("Planning clue")
+                        return('c'+str(card_color))
+
+
+
+
+            for card in self.other_players_cards:
+                card_color=str(card.color)[0]
                 top_card_number=game.piles.get(possible_colors.get(card_color))
                 if card.number==top_card_number+1:
                     if card.number_clue==False:
@@ -325,6 +346,7 @@ class BigBrain(AI):
 #            print("Yolo")
 #            return('p'+random_list[randint(0,4)])
 
+#TODO do_not_discard
 
         if game.blue_coins<8:
             print("Discards a random card")
