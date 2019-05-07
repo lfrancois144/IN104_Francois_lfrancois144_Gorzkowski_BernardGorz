@@ -375,13 +375,28 @@ class BigBrain(AI):
 #            print("Yolo")
 #            return('p'+random_list[randint(0,4)])
 
+        if game.blue_coins<8:
+
+            choose_from = []
             i = 1
             for card in game.current_hand.cards:
                 if (card.color_clue == False) and (card.number_clue == False):
-                    return("d"+str(i))
+                    choose_from.append(str(i))
                 i += 1
+            if len(choose_from)!=0:
+                print("Discards card with no clue")
+                return("d"+choose_from[-1])
+            
+            #choose_from = []
+            #i = 1
+            #for card in game.current_hand.cards:
+            #    if (card.color_clue == False) or (card.number_clue == False):
+            #        choose_from.append(str(i))
+            #    i += 1
+            #if len(choose_from)!=0:
+            #    print("Discards card with one clue")
+            #    return("d"+choice(choose_from))
 
-        if game.blue_coins<8:
             print("Discards a random card")
             return("d"+str(randint(1,5)))
 

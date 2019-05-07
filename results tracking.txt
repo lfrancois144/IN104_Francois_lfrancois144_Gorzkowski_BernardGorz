@@ -35,3 +35,9 @@ tests = 500
 avg = 13.95
 max = 19
 min = 8
+
+Commit : "discard oldest card with no clue"
+tests = 500
+avg = 14.85
+max = 21
+min = 10
