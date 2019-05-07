@@ -272,12 +272,6 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
-    #        for card in self.other_players_cards:
-   #             card_color=str(card.color)[0]
-  #              if card.number==5 and card.number_clue==False:
- #                   print("Clue 5")
-#                    return('c5')
-#
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 if (playable_plus1[card_color] == 1) and game.piles.get(possible_colors.get(card_color)) == card.number - 1:
@@ -315,14 +309,6 @@ class BigBrain(AI):
                 #        print(card.color)
                 #        print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
                 #        return('c'+card_color)
-
-#                elif deck_matrix[color_lines.get(card_color)][card.number-1] == 1:
- #                   if card.number_clue == False:
-  #                      print("One card left: number clue")
-   #                     return('c'+str(card.number))
-    #                if card.color_clue == False:
-     #                   print("One card left: color clue")
-      #                  return('c'+card_color)
 
                 if card.number_clue==False:
                     possible_clue.append(str(card.number))
@@ -431,6 +417,7 @@ class BigBrain(AI):
             return("d"+str(randint(1,5)))
         
 
+        #TODO smart yolo : for instance plays a 3 if it sees piles of 2's
         if game.red_coins<2 and game.blue_coins==8:
             print("Yolo")
             return('p'+random_list[randint(0,4)])
