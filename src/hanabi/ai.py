@@ -211,10 +211,24 @@ class BigBrain(AI):
                         
             elif card.number_clue==5:
                 do_not_discard[i-1]=1
-            
-            #Discarding an useless card or playing a card you know works
+            i+=1
+
+        #Plays 5 in priority
+        i=1
+        for card in game.current_hand.cards:
+            if (card.color_clue != False) and (card.number_clue == '5'):
+                card_color=str(card.color_clue)[0]
+                if (game.piles.get(possible_colors.get(card_color)) == 4) :
+                    print('Plays a safe card')
+                    return("p"+str(i))
+            i+=1
+
+        #Playing a card you know works
+        i=1
+        for card in game.current_hand.cards:
             if (card.color_clue != False) and (card.number_clue != False):
                 card_color=str(card.color_clue)[0]
+
                 if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 1) :
                     print('Plays a safe card')
                     return("p"+str(i))
@@ -326,11 +340,5 @@ class BigBrain(AI):
 
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
-
-#TODO si le mate a une carte jouable en main -> 2 indices (couleur + num)
-
-#TODO si le mate a un 5 : indice (num)
-
-#TODO toutes si les cartes d'une valeur ont ete placees, on peut automatiquement discard des cartes de cette valeur (et donner de sindices dessus ?)
 
 #TODO definir des priorites entre les cartes au lieu de l'ordre de la main
