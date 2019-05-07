@@ -305,15 +305,17 @@ class BigBrain(AI):
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
                         return('c'+card_color)
                 
-                elif card.number<top_card_number+1:
-                    if card.number_clue==False:
-                        print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+str(card.number))
-
-                    if card.color_clue==False:
-                        print(card.color)
-                        print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+card_color)
+                #Lines removed because too expensive, discarding is handled randomly at the end
+                #
+                #elif card.number<top_card_number+1:
+                #    if card.number_clue==False:
+                #        print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be discarded")
+                #        return('c'+str(card.number))
+                #
+                #    if card.color_clue==False:
+                #        print(card.color)
+                #        print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
+                #        return('c'+card_color)
 
                 if card.number_clue==False:
                     possible_clue.append(str(card.number))
@@ -395,7 +397,7 @@ class BigBrain(AI):
             #    i += 1
             #if len(choose_from)!=0:
             #    print("Discards card with one clue")
-            #    return("d"+choice(choose_from))
+            #    return("d"+choose_from[-1))
 
             print("Discards a random card")
             return("d"+str(randint(1,5)))

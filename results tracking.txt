@@ -47,3 +47,9 @@ tests = 500
 avg = 14.85
 max = 21
 min = 10
+
+Commit : "Deleting expensive discards"
+tests = 500
+avg = 17.82
+max = 23
+min = 9
