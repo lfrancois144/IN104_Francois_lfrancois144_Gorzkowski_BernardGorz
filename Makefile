@@ -4,13 +4,12 @@ default: help
 
 help:
 	@echo "Available targets:"
-	@echo "  module - build and install hanabi python3 module"
-	@echo "  doc    - build the module's documentation"
-	@echo "  test   - run the non-regression and validation tests"
-	@echo "  all    - do all 3 previous targets"
-	@echo "  clean  - remove compilation residual files"
-	@echo "  distclean, uninstall"
-	@echo "         - clean, then remove the module"
+	@echo "  module, install - build and install hanabi python3 module"
+	@echo "  doc             - build the module's documentation"
+	@echo "  test            - run the non-regression and validation tests"
+	@echo "  all             - do all 3 previous targets"
+	@echo "  clean           - remove compilation residual files"
+	@echo "  distclean, uninstall - clean, then remove the module"
 
 
 all: module doc test
@@ -18,6 +17,7 @@ all: module doc test
 
 module:
 	cd src && python3 setup.py install --user
+install: module
 
 doc: README.html module
 	cd doc && make html
@@ -39,7 +39,7 @@ uninstall: distclean
 
 
 %.html: %.md
-	pandoc -s --toc $< --css=./doc/github-pandoc.css -o $@
+	-pandoc -s --toc $< --css=./doc/github-pandoc.css -o $@
 
 # Funny rule, that lists all available targets
 list:

@@ -1,0 +1,31 @@
+Commit : "clues improvement"
+tests = 500
+avg = 5.50
+max = 15
+
+Commit : "discard"
+tests = 500
+avg = 12.04
+max = 19
+
+Correction bug "used_pile_i":
+tests = 500
+avg = 12.74
+max = 19
+
+Commit  : "line swap"
+tests = 500
+avg = 13.23
+max = 19
+
+Commit : "2nd line swap":
+tests = 500
+avg = 14.00
+max = 20
+min = 7
+
+Commit : "oups"
+tests = 500
+avg = 13.12
+max = 19
+min = 9

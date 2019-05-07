@@ -307,9 +307,9 @@ class BigBrain(AI):
 #            for card in game.current_hand.cards:
 #                if (card.color_clue != False) and (card.number_clue == False):
 
-#        if game.red_coins<2 and game.blue_coins==8:
-#            print("Yolo")
-#            return('p'+random_list[randint(0,4)])
+        if game.red_coins<2 and game.blue_coins==8:
+            print("Yolo")
+            return('p'+random_list[randint(0,4)])
 
 
         if game.blue_coins<8:

@@ -1,0 +1,11 @@
+Metadata-Version: 1.0
+Name: hanabi
+Version: 0.1.0
+Summary: Hanabi game: CLI, GUI and AI
+Home-page: https://gitlab.ensta.fr/garaud/Hanabi
+Author: JD. Garaud
+Author-email: jdgaraud@onera.fr
+License: LGPL
+Description: UNKNOWN
+Keywords: Hanabi,game,GUI,AI
+Platform: UNKNOWN

@@ -96,3 +96,4 @@ If `hanabi` doesn't start (`bash: hanabi: command not found`), add this to your 
 * [rubber duck debugging](https://en.wikipedia.org/wiki/Rubber_duck_debugging)
 * [markdown (overview)](https://guides.github.com/features/mastering-markdown/), [markdown (in details)](https://github.github.com/gfm/)
 * [BGA state machine](https://www.slideshare.net/boardgamearena/bga-studio-focus-on-bga-game-state-machine)
+>>>>>>> 7ac58446e9d1c2d51860280208d6d588ed8a9898
