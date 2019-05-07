@@ -35,3 +35,9 @@ tests = 500
 avg = 13.95
 max = 19
 min = 8
+
+Commit : "Planning clue" (removed clue 5)
+tests = 500
+avg = 14.75
+max = 20
+min = 9
