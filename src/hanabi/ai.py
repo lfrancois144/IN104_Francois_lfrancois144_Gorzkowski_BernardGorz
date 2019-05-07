@@ -298,15 +298,17 @@ class BigBrain(AI):
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
                         return('c'+card_color)
                 
-                elif card.number<top_card_number+1:
-                    if card.number_clue==False:
-                        print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+str(card.number))
-
-                    if card.color_clue==False:
-                        print(card.color)
-                        print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
-                        return('c'+card_color)
+                #Lines removed because too expensive, discarding is handled randomly at the end
+                #
+                #elif card.number<top_card_number+1:
+                #    if card.number_clue==False:
+                #        print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be discarded")
+                #        return('c'+str(card.number))
+                #
+                #    if card.color_clue==False:
+                #        print(card.color)
+                #        print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be discarded")
+                #        return('c'+card_color)
 
                 if card.number_clue==False:
                     possible_clue.append(str(card.number))
@@ -376,11 +378,27 @@ class BigBrain(AI):
                 i += 1
 
 
+        if game.blue_coins<8:
+
+            choose_from = []
             i = 1
             for card in game.current_hand.cards:
                 if (card.color_clue == False) and (card.number_clue == False):
-                    return("d"+str(i))
+                    choose_from.append(str(i))
                 i += 1
+            if len(choose_from)!=0:
+                print("Discards card with no clue")
+                return("d"+choose_from[-1])
+            
+            #choose_from = []
+            #i = 1
+            #for card in game.current_hand.cards:
+            #    if (card.color_clue == False) or (card.number_clue == False):
+            #        choose_from.append(str(i))
+            #    i += 1
+            #if len(choose_from)!=0:
+            #    print("Discards card with one clue")
+            #    return("d"+choose_from[-1))
 
 
         if game.blue_coins<8:
@@ -397,6 +415,12 @@ class BigBrain(AI):
 
             print("All or no cards are precious, discards a random card")
             return("d"+str(randint(1,5)))
+        
+
+        #TODO smart yolo : for instance plays a 3 if it sees piles of 2's
+        if game.red_coins<2 and game.blue_coins==8:
+            print("Yolo")
+            return('p'+random_list[randint(0,4)])
 
         if game.blue_coins!=0:
             print("Giving a random clue")
