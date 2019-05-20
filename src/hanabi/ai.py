@@ -160,7 +160,6 @@ class BigBrain(AI):
         one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
         random_list = ['1','2','3','4','5','R','B','G','W','Y']
         do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
-        discard_list=[0,0,0,0,0]
         possible_clue=[]
         playable_plus1={'R':0, 'B':0, 'G':0, 'W':0, 'Y':0}      #RBGWY
         #Vérification des cartes en main
@@ -273,12 +272,6 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
-    #        for card in self.other_players_cards:
-   #             card_color=str(card.color)[0]
-  #              if card.number==5 and card.number_clue==False:
- #                   print("Clue 5")
-#                    return('c5')
-#
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 if (playable_plus1[card_color] == 1) and game.piles.get(possible_colors.get(card_color)) == card.number - 1:
@@ -373,6 +366,17 @@ class BigBrain(AI):
 #            for card in game.current_hand.cards:
 #                if (card.color_clue != False) and (card.number_clue == False):
 
+#        if game.red_coins<2 and game.blue_coins==8:
+#            print("Yolo")
+#            return('p'+random_list[randint(0,4)])
+            i = 0
+            for card in game.current_hand.cards:
+                if (card.color_clue != False) and (card.number_clue != False):
+                    card_color=str(card.color_clue)[0]
+                    if deck_matrix[color_lines.get(card_color)][int(card.number_clue)-1] == 1:
+                        do_not_discard[i] = 1
+                i += 1
+
 
         if game.blue_coins<8:
 
@@ -396,7 +400,20 @@ class BigBrain(AI):
             #    print("Discards card with one clue")
             #    return("d"+choose_from[-1))
 
-            print("Discards a random card")
+
+        if game.blue_coins<8:
+            discard_list=[]
+            i = 1
+            for j in do_not_discard:
+                if j == 0:
+                    discard_list.append(i)
+                i += 1
+            
+            if len(discard_list)!=0:
+                print("Discard random but avoid do_not_discard")
+                return('d'+str(discard_list[randint(0,len(discard_list) - 1)]))
+
+            print("All or no cards are precious, discards a random card")
             return("d"+str(randint(1,5)))
         
 
