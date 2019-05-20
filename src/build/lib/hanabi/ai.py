@@ -160,7 +160,6 @@ class BigBrain(AI):
         one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
         random_list = ['1','2','3','4','5','R','B','G','W','Y']
         do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
-        discard_list=[0,0,0,0,0]
         possible_clue=[]
         playable_plus1={'R':0, 'B':0, 'G':0, 'W':0, 'Y':0}      #RBGWY
         #Vérification des cartes en main
@@ -189,9 +188,13 @@ class BigBrain(AI):
             if game.piles.get(possible_colors.get(c))==5:
                 used_pile_5+=1
         
+        #list of piles :
+
+        used_piles_colors = []
+        for c in possible_colors:
+            used_piles_colors.append(game.piles.get(possible_colors.get(c)))
+        
         #Check what types of cards have been discarded
-        #TODO finir cette partie, prendre en compte les cartes sur la table jouees
-        #TODO calculer la meilleure proba de pas se planter en fonction des indices qu'on a
         
         color_lines={'R':0, 'B':1, 'G':2, 'W':3, 'Y':4}
         colors_in_game = [10]*5
@@ -203,6 +206,9 @@ class BigBrain(AI):
             colors_in_game[card_color_ind] -=1
             numbers_in_game[card_number_ind] -=1
             deck_matrix[card_color_ind][card_number_ind] -=1
+
+
+        #Check what cards are on the table
 
         color_count = 0
         for c in possible_colors:
@@ -233,6 +239,14 @@ class BigBrain(AI):
 
             color_count += 1
 
+        #Check what types of cards are in other player's hand
+
+        for other_card in self.other_players_cards:
+                card_color_ind = color_lines.get(str(other_card.color)[0])
+                card_number_ind = int(other_card.number)-1
+                colors_in_game[card_color_ind] -=1
+                numbers_in_game[card_number_ind] -=1
+                deck_matrix[card_color_ind][card_number_ind] -=1
 
         #Playing cards, or including them in discard_list or do_not_discard
         i=1
@@ -273,12 +287,6 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
-    #        for card in self.other_players_cards:
-   #             card_color=str(card.color)[0]
-  #              if card.number==5 and card.number_clue==False:
- #                   print("Clue 5")
-#                    return('c5')
-#
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 if (playable_plus1[card_color] == 1) and game.piles.get(possible_colors.get(card_color)) == card.number - 1:
@@ -322,6 +330,46 @@ class BigBrain(AI):
                 if card.color_clue==False:
                     possible_clue.append(card_color)
 
+
+        #Smart yolo : for instance plays a 3 if it sees piles of 2's
+
+
+        if game.red_coins<2:
+            playable_count = [0, 0, 0, 0, 0]
+            play_order = [1, 2, 3, 4, 5]
+            i = 0
+            for card_count in used_piles_colors:
+                if card_count != 5:
+                    playable_count[card_count] = playable_count[card_count] + deck_matrix[i][card_count]
+                i+=1
+            
+            #Estimating chance of getting a card right
+
+            for card_number_ind in range(5):
+                if numbers_in_game[card_number_ind] != 0:
+                    playable_count[card_number_ind] = playable_count[card_number_ind]/numbers_in_game[card_number_ind]
+                
+            #Sort algorithm (sorting probabilities from best to worst)
+            for j in range(5):
+                cursor = playable_count[j]
+                cursor2 = play_order[j]
+                pos = j
+                while pos > 0 and playable_count[pos - 1] < cursor:
+                    playable_count[pos] = playable_count[pos - 1]
+                    play_order[pos] = play_order[pos - 1]
+                    pos = pos - 1
+                playable_count[pos] = cursor
+                play_order[pos] = cursor2
+            
+            k=0
+            while k<5 and playable_count[k] != 0:
+                l = 1
+                for card in game.current_hand.cards:
+                    if (card.color_clue == False) and (int(card.number_clue) == play_order[k]) and (playable_count[k]>0.4):
+                        print("Yolo")
+                        return("p"+str(l))
+                    l+=1
+                k+=1
 
         #Discard
         if game.blue_coins<8:   
@@ -373,6 +421,19 @@ class BigBrain(AI):
 #            for card in game.current_hand.cards:
 #                if (card.color_clue != False) and (card.number_clue == False):
 
+#        if game.red_coins<2 and game.blue_coins==8:
+#            print("Yolo")
+#            return('p'+random_list[randint(0,4)])
+            i = 0
+            for card in game.current_hand.cards:
+                if (card.color_clue != False) and (card.number_clue != False):
+                    card_color=str(card.color_clue)[0]
+                    if deck_matrix[color_lines.get(card_color)][int(card.number_clue)-1] == 1:
+                        do_not_discard[i] = 1
+                i += 1
+
+
+        
 
         if game.blue_coins<8:
 
@@ -396,14 +457,24 @@ class BigBrain(AI):
             #    print("Discards card with one clue")
             #    return("d"+choose_from[-1))
 
-            print("Discards a random card")
+
+        if game.blue_coins<8:
+            discard_list=[]
+            i = 1
+            for j in do_not_discard:
+                if j == 0:
+                    discard_list.append(i)
+                i += 1
+            
+            if len(discard_list)!=0:
+                print("Discard random but avoid do_not_discard")
+                return('d'+str(discard_list[randint(0,len(discard_list) - 1)]))
+
+            print("All or no cards are precious, discards a random card")
             return("d"+str(randint(1,5)))
-        
 
-        if game.red_coins<2 and game.blue_coins==8:
-            print("Yolo")
-            return('p'+random_list[randint(0,4)])
 
+        #TODO Ne pas donner un clue que l'on connait deja !
         if game.blue_coins!=0:
             print("Giving a random clue")
             if len(possible_clue)==0:
