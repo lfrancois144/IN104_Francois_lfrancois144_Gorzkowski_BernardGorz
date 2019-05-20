@@ -272,40 +272,18 @@ class BigBrain(AI):
 
         #Clues
         if game.blue_coins!=0:
-            collateral_clue=[0,0,0,0,0,0,0,0,0,0] #Number of cards that will benefit from a clue [number,color]
-            i=0
 
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 if (playable_plus1[card_color] == 1) and game.piles.get(possible_colors.get(card_color)) == card.number - 1:
                     if card.number_clue == False:
-                     #   for other_card in self.other_players_cards:
-                      #      if other_card.number == card.number:
-                       #         collateral_clue[i] += 1
                         print("Planning clue")
                         return('c'+str(card.number))
 
                     if card.color_clue == False:
-                        #for other_card in self.other_players_cards:
-                         #   if other_card.color == card.color:
-                          #      collateral_clue[i+1] += 1
                         print("Planning clue")
                         return('c'+str(card_color))
-                i+=2
-            
-#            best_clue=collateral_clue.index(max(collateral_clue))
-            
- #           if best_clue % 2 == 0:
-  #              card_rank = best_clue // 2
-   #             card_nb = self.other_players_cards[card_rank].number
-    #            print("Oui_1")
-     #           return('c'+str(card_nb))
-#
- #           else:
-  #              card_rank = best_clue // 2 + 1
-   #             card_color = self.other_players_cards[card_rank].color[0]
-    #            print("Oui_2")
-     #           return('c'+card_color)
+
 
 
             for card in self.other_players_cards:
