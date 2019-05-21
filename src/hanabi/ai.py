@@ -158,6 +158,7 @@ class BigBrain(AI):
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
         possible_colors={'R':hanabi.deck.Color.Red, 'B':hanabi.deck.Color.Blue, 'G':hanabi.deck.Color.Green, 'W':hanabi.deck.Color.White, 'Y':hanabi.deck.Color.Yellow}
         one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
+        color_list = ['R','B','G','W','Y']
         random_list = ['1','2','3','4','5','R','B','G','W','Y']
         do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
         possible_clue=[]
@@ -376,6 +377,56 @@ class BigBrain(AI):
                     if deck_matrix[color_lines.get(card_color)][int(card.number_clue)-1] == 1:
                         do_not_discard[i] = 1
                 i += 1
+        
+        #If there are many blue coins, give a clue about something they don't know      
+
+        if game.blue_coins>3:
+            optmizing_clues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] #colors then numbers
+            for card in self.other_players_cards:
+                if game.piles.get(hanabi.deck.Color.Red)==5 and str(card.color_clue)=='Red':
+                    optmizing_clues[0] += 1
+
+                if game.piles.get(hanabi.deck.Color.Blue)==5 and str(card.color_clue)=='Blue':
+                    optmizing_clues[1] += 1
+            
+                if game.piles.get(hanabi.deck.Color.Green)==5 and str(card.color_clue)=='Green':
+                    optmizing_clues[2] += 1
+
+                if game.piles.get(hanabi.deck.Color.White)==5 and str(card.color_clue)=='White':
+                    optmizing_clues[3] += 1
+
+                if game.piles.get(hanabi.deck.Color.Yellow)==5 and str(card.color_clue)=='Yellow':
+                    optmizing_clues[4] += 1
+                
+                if card.number_clue==1:
+                    optmizing_clues[5] += 1
+
+                if card.number_clue==2:
+                    optmizing_clues[6] += 1
+
+                if card.number_clue==3:
+                    optmizing_clues[7] += 1
+
+                if card.number_clue==4:
+                    optmizing_clues[8] += 1
+                
+                if card.number_clue==5:
+                    optmizing_clues[9] += 1
+            
+            i = 1
+            max = 0
+            while i < 10:
+                if optmizing_clues[i] > optmizing_clues[max]:
+                    max = i
+                i += 1
+            
+            if max <5 :
+                print("Clever clue")
+                return('c'+color_list[max])
+            
+            if max > 4 :
+                print("Clever clue")
+                return('c'+max-4)
 
 
         if game.blue_coins<8:
