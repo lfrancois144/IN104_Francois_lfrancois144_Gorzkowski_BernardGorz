@@ -321,8 +321,8 @@ class BigBrain(AI):
 
 
 
-            collateral_clue=[0,0,0,0,0,0,0,0,0,0]
-            i=0
+            #collateral_clue=[0,0,0,0,0,0,0,0,0,0]
+            #i=0
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 top_card_number=game.piles.get(possible_colors.get(card_color))

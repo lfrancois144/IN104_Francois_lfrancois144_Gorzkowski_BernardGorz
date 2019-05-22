@@ -249,7 +249,7 @@ class BigBrain(AI):
                 numbers_in_game[card_number_ind] -=1
                 deck_matrix[card_color_ind][card_number_ind] -=1
 
-        #Playing cards
+######## Playing cards ########
         i=1
         for card in game.current_hand.cards:
             
@@ -283,7 +283,7 @@ class BigBrain(AI):
 
 
 
-        #Clues
+######## Clues #######
         if game.blue_coins!=0:
             i=0
             for card in self.other_players_cards:
@@ -321,8 +321,8 @@ class BigBrain(AI):
 
 
 
-            collateral_clue=[0,0,0,0,0,0,0,0,0,0]
-            i=0
+            #collateral_clue=[0,0,0,0,0,0,0,0,0,0]
+            #i=0
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 top_card_number=game.piles.get(possible_colors.get(card_color))
@@ -417,7 +417,7 @@ class BigBrain(AI):
                     l+=1
                 k+=1
 
-        #Discard
+######## Discard #######
         if game.blue_coins<8:   
             i=1
             for card in game.current_hand.cards:
@@ -571,7 +571,7 @@ class BigBrain(AI):
             return("d"+str(randint(1,5)))
 
 
-        #TODO Ne pas donner un clue que l'on connait deja !
+        
         if game.blue_coins!=0:
             print("Giving a random clue")
             if len(possible_clue)==0:
@@ -583,4 +583,3 @@ class BigBrain(AI):
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
 
-#TODO definir des priorites entre les cartes au lieu de l'ordre de la main
