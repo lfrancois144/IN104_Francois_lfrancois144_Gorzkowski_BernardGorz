@@ -59,3 +59,9 @@ tests = 500
 avg = 18.55
 max = 25
 min = 9
+
+Commit : "Clever clue + extreme risk as last move"
+tests =500
+avg = 18.77
+max = 25
+min = 4
