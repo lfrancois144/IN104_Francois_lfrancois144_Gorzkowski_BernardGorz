@@ -157,27 +157,28 @@ class BigBrain(AI):
         game=self.game
         coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
         possible_colors={'R':hanabi.deck.Color.Red, 'B':hanabi.deck.Color.Blue, 'G':hanabi.deck.Color.Green, 'W':hanabi.deck.Color.White, 'Y':hanabi.deck.Color.Yellow}
-        one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
+        color_list=['R','B','G','W','Y']
         random_list = ['1','2','3','4','5','R','B','G','W','Y']
-        do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
+        do_not_discard=[0,0,0,0,0] #If =1: precious card
         possible_clue=[]
         playable_plus1={'R':0, 'B':0, 'G':0, 'W':0, 'Y':0}      #RBGWY
+        #collateral_clue=[0,0,0,0,0,0,0,0,0,0]
         #Vérification des cartes en main
         used_pile_1=0
         used_pile_2=0
         used_pile_3=0
         used_pile_4=0
         used_pile_5=0
-
-        for card in game.current_hand.cards:
-            if (card.number_clue != False) and (card.color_clue != False):
+        
+        for card in game.current_hand.cards:                                                            #Creates a list of cards in player's hand that can be played if another card is played
+            if (card.number_clue != False) and (card.color_clue != False):                              #Ex: if blue pile contains a 3, a blue 5 will be in the playabla_plus1 list.
                 card_color=str(card.color_clue)[0]
                 if game.piles.get(possible_colors.get(card_color)) == (int(card.number_clue) - 2):
                     playable_plus1[card_color]=1
 
         
-        for c in possible_colors:
-            if game.piles.get(possible_colors.get(c))>=1:
+        for c in possible_colors:                           #Creates lists that represent the number of x played
+            if game.piles.get(possible_colors.get(c))>=1:   #Ex: if used_pile_2==2, it means that two piles contain at least 2 cards
                 used_pile_1+=1
             if game.piles.get(possible_colors.get(c))>=2:
                 used_pile_2+=1
@@ -248,7 +249,7 @@ class BigBrain(AI):
                 numbers_in_game[card_number_ind] -=1
                 deck_matrix[card_color_ind][card_number_ind] -=1
 
-        #Playing cards, or including them in discard_list or do_not_discard
+######## Playing cards ########
         i=1
         for card in game.current_hand.cards:
             
@@ -256,9 +257,6 @@ class BigBrain(AI):
             if card.number_clue=='1' and used_pile_1==0:
                 print('Playing the 1 because the board is empty')
                 return("p"+str(i))
-                        
-            elif card.number_clue==5:
-                do_not_discard[i-1]=1
             i+=1
 
         #Plays 5 in priority
@@ -285,33 +283,78 @@ class BigBrain(AI):
 
 
 
-        #Clues
+######## Clues #######
         if game.blue_coins!=0:
-
+            i=0
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 if (playable_plus1[card_color] == 1) and game.piles.get(possible_colors.get(card_color)) == card.number - 1:
                     if card.number_clue == False:
+                        #for other_card in self.other_players_cards:
+                        #    if other_card.number == card.number:
+                        #        collateral_clue[i] += 1   
                         print("Planning clue")
                         return('c'+str(card.number))
 
                     if card.color_clue == False:
+                        #for other_card in self.other_players_cards:
+                        #    if other_card.color == card.color:
+                        #       collateral_clue[i+1] += 1    
                         print("Planning clue")
                         return('c'+str(card_color))
+            #    i+=2
+
+            #clue_rank = 0
+            #n_max = collateral_clue[0]
+            #for i in range(1,len(collateral_clue)):
+            #    if collateral_clue[i]>n_max:
+            #        n_max = collateral_clue[i]
+            #        clue_rank = i
+            #
+            #if clue_rank != 0:
+            #    if clue_rank % 2 == 0:
+            #        return('c'+str(self.other_players_cards[clue_rank//2].number))
+            #    
+            #    else:
+            #        card_color = str(self.other_players_cards[clue_rank//2].color)[0]
+            #        return('c'+card_color)
 
 
 
+            #collateral_clue=[0,0,0,0,0,0,0,0,0,0]
+            #i=0
             for card in self.other_players_cards:
                 card_color=str(card.color)[0]
                 top_card_number=game.piles.get(possible_colors.get(card_color))
                 if card.number==top_card_number+1:
                     if card.number_clue==False:
+                        #for other_card in self.other_players_cards:
+                        #    if other_card.number == card.number:
+                        #        collateral_clue[i] += 1
                         print("Giving a number clue about the "+str(card.color)+str(card.number)+", which can be played")
                         return('c'+str(card.number))
 
                     if card.color_clue==False:
+                        #for other_card in self.other_players_cards:
+                        #    if other_card.color == card.color:
+                        #        collateral_clue[i+1] += 1
                         print("Giving a color clue about the "+str(card.color)+str(card.number)+", which can be played")
                         return('c'+card_color)
+            #    i+=2
+
+            #clue_rank = 0
+            #n_max = collateral_clue[0]
+            #for i in range(1,len(collateral_clue)):
+            #    if collateral_clue[i]>n_max:
+            #        n_max = collateral_clue[i]
+            #        clue_rank = i
+            #if clue_rank != 0:
+            #    if clue_rank % 2 == 0:
+            #        return('c'+str(self.other_players_cards[clue_rank//2].number))
+            #    
+            #    else:
+            #        card_color = str(self.other_players_cards[clue_rank//2].color)[0]
+            #        return('c'+card_color)
                 
                 #Lines removed because too expensive, discarding is handled randomly at the end
                 #
@@ -361,17 +404,20 @@ class BigBrain(AI):
                 playable_count[pos] = cursor
                 play_order[pos] = cursor2
             
+            nb_of_cards = len(game.deck.cards)
+
             k=0
             while k<5 and playable_count[k] != 0:
                 l = 1
                 for card in game.current_hand.cards:
-                    if (card.color_clue == False) and (int(card.number_clue) == play_order[k]) and (playable_count[k]>0.4):
+                    #The more the game goes on, the more risk is taken
+                    if (card.color_clue == False) and (int(card.number_clue) == play_order[k]) and (playable_count[k]>(0.3+((0.6-0.3)/40)*nb_of_cards)):
                         print("Yolo")
                         return("p"+str(l))
                     l+=1
                 k+=1
 
-        #Discard
+######## Discard #######
         if game.blue_coins<8:   
             i=1
             for card in game.current_hand.cards:
@@ -434,6 +480,57 @@ class BigBrain(AI):
 
 
         
+        #If there are many blue coins, give a clue about something they don't know      
+        #Deactivated because useless
+
+        if game.blue_coins>8:
+            optmizing_clues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] #colors then numbers
+            for card in self.other_players_cards:
+                if game.piles.get(hanabi.deck.Color.Red)==5 and str(card.color_clue)=='Red':
+                    optmizing_clues[0] += 1
+
+                if game.piles.get(hanabi.deck.Color.Blue)==5 and str(card.color_clue)=='Blue':
+                    optmizing_clues[1] += 1
+            
+                if game.piles.get(hanabi.deck.Color.Green)==5 and str(card.color_clue)=='Green':
+                    optmizing_clues[2] += 1
+
+                if game.piles.get(hanabi.deck.Color.White)==5 and str(card.color_clue)=='White':
+                    optmizing_clues[3] += 1
+
+                if game.piles.get(hanabi.deck.Color.Yellow)==5 and str(card.color_clue)=='Yellow':
+                    optmizing_clues[4] += 1
+                
+                if card.number_clue==1:
+                    optmizing_clues[5] += 1
+
+                if card.number_clue==2:
+                    optmizing_clues[6] += 1
+
+                if card.number_clue==3:
+                    optmizing_clues[7] += 1
+
+                if card.number_clue==4:
+                    optmizing_clues[8] += 1
+                
+                if card.number_clue==5:
+                    optmizing_clues[9] += 1
+            
+            i = 1
+            max = 0
+            while i < 10:
+                if optmizing_clues[i] > optmizing_clues[max]:
+                    max = i
+                i += 1
+            
+            if max <5 :
+                print("Clever clue")
+                return('c'+color_list[max])
+            
+            if max > 4 :
+                print("Clever clue")
+                return('c'+max-4)
+
 
         if game.blue_coins<8:
 
@@ -474,7 +571,7 @@ class BigBrain(AI):
             return("d"+str(randint(1,5)))
 
 
-        #TODO Ne pas donner un clue que l'on connait deja !
+        
         if game.blue_coins!=0:
             print("Giving a random clue")
             if len(possible_clue)==0:
@@ -486,4 +583,3 @@ class BigBrain(AI):
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
 
-#TODO definir des priorites entre les cartes au lieu de l'ordre de la main
