@@ -56,6 +56,13 @@ for i in possible_scores:
 
 occurences = occurences/iter
 
+i = 0
+max_occurences = 0
+while i < 26:
+    if max_occurences < occurences[i]:
+        max_occurences = occurences[i]
+    i+=1
+
 X = np.linspace(0,25,10000)
 Y = np.exp(-(1/2)*((X-avg)/sd)**2)/(sd*np.sqrt(2*np.pi))
 plt.plot(X,Y, color = [41/255, 163/255, 41/255], linewidth = 2)
@@ -67,7 +74,7 @@ def plot_bar_x():
     plt.xlabel('Scores', fontsize=15)
     plt.ylabel('Occurences (normalized)', fontsize=15)
     plt.xticks(index, possible_scores, fontsize=7, rotation=30)
-    plt.text(0, 0.2, 'Games = '+str(iter)+'\nMedian = '+str(median)+'\nAverage = '+str(round(avg,2))+'\nStandard deviation = '+str(round(sd,2))+'\nMin = '+str(min)+'\nMax = '+str(max), fontsize=10, horizontalalignment='left', verticalalignment='top')
+    plt.text(0, 9*max_occurences/10, 'Games = '+str(iter)+'\nMedian = '+str(median)+'\nAverage = '+str(round(avg,2))+'\nStandard deviation = '+str(round(sd,2))+'\nMin = '+str(min)+'\nMax = '+str(max), fontsize=10, horizontalalignment='left', verticalalignment='top')
     plt.title('Times the AI hit different scores', fontsize=20)
     plt.show()
 
