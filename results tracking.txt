@@ -53,3 +53,9 @@ tests = 500
 avg = 17.82
 max = 23
 min = 9
+
+Commit : "Playing with probabilites"
+tests = 500
+avg = 18.55
+max = 25
+min = 9
