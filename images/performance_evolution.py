@@ -9,20 +9,14 @@ commits = ["Random", "color advice" ,"clues improvement", "discard", "sed pile",
 
 poss_avg = [1,3,5,7,9,11,13,15,17,19,21,23,25]
 
-plt.plot(commits, average, 'o')
+plt.plot(commits, average, 'o', label="Average")
+plt.plot(commits, median, 'o', label="Median")
+plt.legend()
 plt.xlabel('Commits', fontsize=15)
-plt.ylabel('Average', fontsize=15)
+plt.ylabel('Score', fontsize=15)
 plt.xticks(commits, fontsize=7, rotation=20)
 plt.yticks(poss_avg)
 plt.title('Evolution of the average score', fontsize=20)
-plt.show()
-
-plt.plot(commits, median, 'o')
-plt.xlabel('Commits', fontsize=15)
-plt.ylabel('Median', fontsize=15)
-plt.xticks(commits, fontsize=7, rotation=20)
-plt.yticks(poss_avg)
-plt.title('Evolution of the median', fontsize=20)
 plt.show()
 
 plt.plot(commits, mini, 'o', label="Minimum score")
