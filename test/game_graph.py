@@ -14,7 +14,7 @@ with contextlib.redirect_stdout(None):
 
     for n in range(iter):
         game = hanabi.Game()
-        ai = hanabi.ai.BigBrain(game)
+        ai = hanabi.ai.ColorAdvice(game)
         game.ai = ai
         game.run()
         score = game.score

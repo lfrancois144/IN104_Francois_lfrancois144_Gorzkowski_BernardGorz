@@ -374,10 +374,11 @@ class BigBrain(AI):
                     possible_clue.append(card_color)
 
 
-        #Smart yolo : for instance plays a 3 if it sees piles of 2's
+        #Smart risk taker : for instance plays a 3 if it sees piles of 2's
 
+        nb_of_cards = len(game.deck.cards)
 
-        if game.red_coins<2:
+        if game.red_coins<2 or (game.red_coins<3 and nb_of_cards==0):
             playable_count = [0, 0, 0, 0, 0]
             play_order = [1, 2, 3, 4, 5]
             i = 0
@@ -403,19 +404,19 @@ class BigBrain(AI):
                     pos = pos - 1
                 playable_count[pos] = cursor
                 play_order[pos] = cursor2
-            
-            nb_of_cards = len(game.deck.cards)
+
 
             k=0
             while k<5 and playable_count[k] != 0:
                 l = 1
                 for card in game.current_hand.cards:
                     #The more the game goes on, the more risk is taken
-                    if (card.color_clue == False) and (int(card.number_clue) == play_order[k]) and (playable_count[k]>(0.3+((0.6-0.3)/40)*nb_of_cards)):
+                    if (card.color_clue == False) and (int(card.number_clue) == play_order[k]) and ((playable_count[k]>(0.3+((0.6-0.3)/40)*nb_of_cards)) or (nb_of_cards==0 and playable_count[k]>0) ):
                         print("Yolo")
                         return("p"+str(l))
                     l+=1
                 k+=1
+            
 
 ######## Discard #######
         if game.blue_coins<8:   
@@ -479,60 +480,7 @@ class BigBrain(AI):
                 i += 1
 
 
-        
-        #If there are many blue coins, give a clue about something they don't know      
-        #Deactivated because useless
-
-        if game.blue_coins>8:
-            optmizing_clues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] #colors then numbers
-            for card in self.other_players_cards:
-                if game.piles.get(hanabi.deck.Color.Red)==5 and str(card.color_clue)=='Red':
-                    optmizing_clues[0] += 1
-
-                if game.piles.get(hanabi.deck.Color.Blue)==5 and str(card.color_clue)=='Blue':
-                    optmizing_clues[1] += 1
-            
-                if game.piles.get(hanabi.deck.Color.Green)==5 and str(card.color_clue)=='Green':
-                    optmizing_clues[2] += 1
-
-                if game.piles.get(hanabi.deck.Color.White)==5 and str(card.color_clue)=='White':
-                    optmizing_clues[3] += 1
-
-                if game.piles.get(hanabi.deck.Color.Yellow)==5 and str(card.color_clue)=='Yellow':
-                    optmizing_clues[4] += 1
-                
-                if card.number_clue==1:
-                    optmizing_clues[5] += 1
-
-                if card.number_clue==2:
-                    optmizing_clues[6] += 1
-
-                if card.number_clue==3:
-                    optmizing_clues[7] += 1
-
-                if card.number_clue==4:
-                    optmizing_clues[8] += 1
-                
-                if card.number_clue==5:
-                    optmizing_clues[9] += 1
-            
-            i = 1
-            max = 0
-            while i < 10:
-                if optmizing_clues[i] > optmizing_clues[max]:
-                    max = i
-                i += 1
-            
-            if max <5 :
-                print("Clever clue")
-                return('c'+color_list[max])
-            
-            if max > 4 :
-                print("Clever clue")
-                return('c'+max-4)
-
-
-        if game.blue_coins<8:
+        if game.blue_coins<7:
 
             choose_from = []
             i = 1
@@ -554,8 +502,6 @@ class BigBrain(AI):
             #    print("Discards card with one clue")
             #    return("d"+choose_from[-1))
 
-
-        if game.blue_coins<8:
             discard_list=[]
             i = 1
             for j in do_not_discard:
@@ -569,17 +515,121 @@ class BigBrain(AI):
 
             print("All or no cards are precious, discards a random card")
             return("d"+str(randint(1,5)))
-
-
         
+                
+        #Give a clue that provides the most information 
+
         if game.blue_coins!=0:
+            optmizing_clues = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0] #colors then numbers
+            for card in self.other_players_cards:
+                if str(card.color)=='Red' and card.color_clue == False:
+                    optmizing_clues[0] += 1
+
+                if str(card.color)=='Blue' and card.color_clue == False:
+                    optmizing_clues[1] += 1
+            
+                if str(card.color)=='Green' and card.color_clue == False:
+                    optmizing_clues[2] += 1
+
+                if str(card.color)=='White' and card.color_clue == False:
+                    optmizing_clues[3] += 1
+
+                if str(card.color)=='Yellow' and card.color_clue == False:
+                    optmizing_clues[4] += 1
+                
+                if card.number==1 and card.number_clue==False:
+                    optmizing_clues[5] += 1
+
+                if card.number==2 and card.number_clue==False:
+                    optmizing_clues[6] += 1
+
+                if card.number==3 and card.number_clue==False:
+                    optmizing_clues[7] += 1
+
+                if card.number==4 and card.number_clue==False:
+                    optmizing_clues[8] += 1
+                
+                if card.number==5 and card.number_clue==False:
+                    optmizing_clues[9] += 1
+
+            i = 0
+            max = -1
+            while i < 10:
+                if optmizing_clues[i] !=0 and optmizing_clues[i] > optmizing_clues[max]:
+                    max = i
+                i += 1
+            
+            if max <5 and max>=0 :
+                print("Clever clue")
+                return('c'+color_list[max])
+            
+            if max > 4 :
+                print("Clever clue")
+                return('c'+str(max-4))
+
             print("Giving a random clue")
             if len(possible_clue)==0:
                 return('c'+random_list[randint(0,9)])
             return('c'+possible_clue[randint(0,len(possible_clue)-1)])
 
 
-
+        #Should never happen
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
 
+
+class ColorAdvice(AI):
+    """
+    A player set to become the best of all
+    """
+    def play(self):
+        game=self.game
+        coups_possibles = ['d1', 'd2', 'd3', 'd4', 'd5', 'p1', 'p2', 'p3', 'p4', 'p5', 'cR', 'cB', 'cG', 'cW', 'cY', 'c1', 'c2', 'c3', 'c4', 'c5']
+        possible_colors={'R':hanabi.deck.Color.Red, 'B':hanabi.deck.Color.Blue, 'G':hanabi.deck.Color.Green, 'W':hanabi.deck.Color.White, 'Y':hanabi.deck.Color.Yellow}
+        one_cards=['R1', 'B1', 'Y1', 'W1', 'G1']
+        do_not_discard=[0,0,0,0,0] #Si =1: carte importante à ne pas discard
+        discard_list=[0,0,0,0,0]
+        #Vérification des cartes en main
+        used_piles=0
+        #Giving advices if possible
+        if game.blue_coins!=0:
+            for card in self.other_players_cards:
+                if card.number == 1 and card.number_clue==False:
+                    print("Other player have a 1 and doesn't know it, must tell him")
+                    return('c1')
+
+            for card in self.other_players_cards:
+                if card.number == 1 and card.color_clue==False:
+                    print("Other player knows he have a 1 but doesn't know the color")
+                    card_color=str(card.color)[0]
+                    return('c'+card_color)
+                
+        #Checking if the board is empty, so that a 1 card can be played without knowing its color
+        for c in possible_colors:
+            if game.piles.get(possible_colors.get(c))!=0:
+                used_piles+=1 
+
+        #Playing cards, or including them in discard_list or do_not_discard
+        i=1
+        for card in game.current_hand.cards:
+            if card.number_clue=='1':
+                print('Detected a 1')
+                if used_piles==0:
+                    print('Playing the 1 because the board is empty')
+                    return("p"+str(i))
+                if card.color_clue != False:
+                    print('I know the color')
+                    card_color=str(card.color_clue)[0]
+                    if game.piles.get(card_color)==0:
+                        print('Use case happened')
+                        return('p'+str(i))
+                    #TODO add card on the discard_list
+            elif card.number_clue==5:
+                do_not_discard[i-1]=1
+            i+=1
+
+        
+
+
+        print('Plays randomly')
+        return(coups_possibles[randint(0,19)])

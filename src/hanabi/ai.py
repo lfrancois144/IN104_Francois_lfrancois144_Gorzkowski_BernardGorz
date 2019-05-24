@@ -576,3 +576,4 @@ class BigBrain(AI):
         #Should never happen
         print('Plays randomly')
         return(coups_possibles[randint(0,19)])
+
